@@ -15,5 +15,5 @@ export class BookDto {
 
   @IsNotEmpty()
   @IsString()
-  readonly userId: string;
+  userId: string;
 }

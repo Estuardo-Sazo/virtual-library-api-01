@@ -14,6 +14,6 @@ export class BookService {
   }
 
   async findAll() {
-    return await this.bookModel.find().exec();
+    return await this.bookModel.find().populate('userId', 'username').exec();
   }
 }
