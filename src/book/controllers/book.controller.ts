@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
 import { BookService } from '../services/book.service';
 import { BookDto } from '../dtos/book.dto';
 import { JwtGuardGuard } from 'src/auth/guards/jwt-guard.guard';
@@ -21,5 +29,33 @@ export class BookController {
   @Get()
   async findAll() {
     return this.bookService.findAll();
+  }
+
+  @Post('update/:id')
+  async update(@Param('id') id: string, @Body() book: BookDto) {
+    return this.bookService.update(id, book);
+  }
+
+  @Post('delete/:id')
+  async delete(@Param('id') id: string) {
+    return this.bookService.delete(id);
+  }
+
+  @Public()
+  @Get('find/:id')
+  async findOne(@Param('id') id: string) {
+    return this.bookService.findOne(id);
+  }
+
+  @Public()
+  @Get('user/:userId')
+  async findByUserId(@Param('userId') userId: string) {
+    return this.bookService.findByUserId(userId);
+  }
+
+  @Public()
+  @Get('search')
+  async findSearchTitleDesc(@Query('query') query: string) {
+    return this.bookService.findSearchTitleDesc(query);
   }
 }

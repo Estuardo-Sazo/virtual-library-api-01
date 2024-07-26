@@ -13,7 +13,7 @@ export class BookDto {
   @IsArray()
   readonly images: string[];
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsString()
   userId: string;
 }

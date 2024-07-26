@@ -13,7 +13,40 @@ export class BookService {
     return await newBook.save();
   }
 
+  async update(id: string, book: BookDto) {
+    return await this.bookModel.findByIdAndUpdate(id, book, { new: true });
+  }
+
   async findAll() {
     return await this.bookModel.find().populate('userId', 'username').exec();
+  }
+  async delete(id: string) {
+    return await this.bookModel.findByIdAndDelete(id);
+  }
+
+  async findOne(id: string) {
+    return await this.bookModel
+      .findById(id)
+      .populate('userId', 'username')
+      .exec();
+  }
+
+  async findByUserId(userId: string) {
+    return await this.bookModel
+      .find({ userId })
+      .populate('userId', 'username')
+      .exec();
+  }
+
+  async findSearchTitleDesc(query: string) {
+    const regexQuery = new RegExp(query, 'i'); // 'i' para ignorar mayúsculas/minúsculas
+    return await this.bookModel
+      .find({
+        $or: [
+          { title: { $regex: regexQuery } },
+          { description: { $regex: regexQuery } },
+        ],
+      })
+      .exec();
   }
 }
