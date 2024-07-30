@@ -3,10 +3,15 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Book } from '../schemas/book.schema';
 import { Model } from 'mongoose';
 import { BookDto } from '../dtos/book.dto';
+import { CommentDto } from '../dtos/comment.dto';
+import { Comment } from '../schemas/comment.schema';
 
 @Injectable()
 export class BookService {
-  constructor(@InjectModel(Book.name) private bookModel: Model<Book>) {}
+  constructor(
+    @InjectModel(Book.name) private bookModel: Model<Book>,
+    @InjectModel(Comment.name) private commetModel: Model<Comment>,
+  ) {}
 
   async create(book: BookDto) {
     const newBook = new this.bookModel(book);
@@ -48,5 +53,21 @@ export class BookService {
         ],
       })
       .exec();
+  }
+
+  async addComment(bookId: string, comment: CommentDto) {
+    const newComment = new this.commetModel(comment);
+    return newComment.save();
+  }
+
+  async findComments(bookId: string) {
+    return await this.commetModel
+      .find({ bookId })
+      .populate('userId', 'username')
+      .exec();
+  }
+
+  async deleteComment(commentId: string) {
+    return await this.commetModel.findByIdAndDelete(commentId);
   }
 }
