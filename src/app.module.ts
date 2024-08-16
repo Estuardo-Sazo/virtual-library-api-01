@@ -6,6 +6,7 @@ import { AppService } from './app.service';
 import { AppConfig } from './configs/app.config';
 import { AuthModule } from './auth/auth.module';
 import { BookModule } from './book/book.module';
+import { UploadModule } from './upload/upload.module';
 
 @Module({
   imports: [
@@ -15,12 +16,14 @@ import { BookModule } from './book/book.module';
         () => ({
           DATABASE_URI: process.env.DATABASE_URI,
           JWT_SECRET: process.env.JWT_SECRET,
+          HOST_API: process.env.HOST_API,
         }),
       ],
       validate: (config) => {
         const validatedConfig = new AppConfig();
         validatedConfig.DATABASE_URI = config.DATABASE_URI;
         validatedConfig.JWT_SECRET = config.JWT_SECRET;
+        validatedConfig.HOST_API = config.HOST_API;
         return validatedConfig;
       },
     }),
@@ -33,6 +36,7 @@ import { BookModule } from './book/book.module';
     }),
     AuthModule,
     BookModule,
+    UploadModule,
   ],
   controllers: [AppController],
   providers: [AppService],

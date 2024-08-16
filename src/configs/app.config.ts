@@ -5,5 +5,8 @@ export class AppConfig {
   DATABASE_URI: string;
 
   @IsString()
+  HOST_API: string;
+
+  @IsString()
   JWT_SECRET: string;
 }
